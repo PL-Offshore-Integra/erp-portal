@@ -222,7 +222,7 @@ function ModuloCard({ mod, tieneAcceso }) {
   const isActivo = mod.status === "activo";
   const puedeAbrir = isActivo && mod.url && tieneAcceso;
 
-  const handleClick = () => { if (puedeAbrir) window.open(mod.url, "_blank"); };
+  const handleClick = () => { if (puedeAbrir) window.open(mod.url, "_self"); };
 
   let clase = `modulo-card ${mod.status}`;
   if (isActivo && !tieneAcceso) clase = "modulo-card sin-acceso";
