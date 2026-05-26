@@ -139,6 +139,93 @@ const CSS = `
 }
 body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; }
 
+/* ── LOGIN ── */
+.login-page {
+  min-height: 100vh; display: flex;
+  background: var(--navy); position: relative; overflow: hidden;
+}
+.login-bg-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(135deg, rgba(11,22,41,0.92) 0%, rgba(11,22,41,0.75) 60%, rgba(11,22,41,0.92) 100%);
+}
+.login-bg-lines {
+  position: absolute; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(184,148,42,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(184,148,42,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.login-split { position: relative; z-index: 2; display: flex; width: 100%; }
+.login-left {
+  flex: 1; display: flex; flex-direction: column; justify-content: center;
+  padding: 80px 60px; border-right: 1px solid rgba(184,148,42,0.15);
+}
+.login-left-eyebrow {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 3px;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 20px;
+}
+.login-left-logo { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+.login-left-logo img { width: 52px; height: 52px; border-radius: 12px; object-fit: cover; border: 2px solid rgba(255,255,255,0.15); }
+.login-left-title {
+  font-size: 52px; font-weight: 900; color: #fff;
+  line-height: 0.95; letter-spacing: -2px; margin-bottom: 0;
+}
+.login-left-title span { color: var(--gold); display: block; }
+.login-left-line { width: 48px; height: 3px; background: var(--gold); margin: 20px 0; }
+.login-left-sub {
+  font-size: 13px; color: rgba(255,255,255,0.45);
+  line-height: 1.7; max-width: 320px; font-style: italic;
+}
+.login-right {
+  width: 440px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 60px 48px;
+}
+.login-card {
+  width: 100%; background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(184,148,42,0.2); border-radius: 16px;
+  padding: 40px 36px; backdrop-filter: blur(20px);
+}
+.login-card-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.login-card-sub {
+  font-family: var(--mono); font-size: 10px;
+  color: rgba(255,255,255,0.35); letter-spacing: 1px;
+  margin-bottom: 28px; text-transform: uppercase;
+}
+.login-fg { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+.login-fg label { font-size: 9px; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
+.login-fg input {
+  border: 1px solid rgba(255,255,255,0.12); border-radius: 8px;
+  padding: 11px 14px; font-size: 13px; font-family: var(--sans);
+  color: #fff; background: rgba(255,255,255,0.06); outline: none; transition: border-color .15s;
+}
+.login-fg input::placeholder { color: rgba(255,255,255,0.2); }
+.login-fg input:focus { border-color: var(--gold); background: rgba(255,255,255,0.09); }
+.login-btn {
+  width: 100%; padding: 12px; margin-top: 8px;
+  background: var(--gold); color: var(--navy);
+  border: none; border-radius: 8px;
+  font-family: var(--sans); font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: background .15s; letter-spacing: .5px;
+}
+.login-btn:hover { background: var(--gold2); }
+.login-btn:disabled { opacity: .5; cursor: not-allowed; }
+.login-error {
+  background: rgba(239,68,68,0.12); color: #FCA5A5;
+  border: 1px solid rgba(239,68,68,0.25); border-radius: 8px;
+  padding: 10px 14px; font-size: 12px; margin-bottom: 14px;
+}
+.login-footer {
+  text-align: center; font-family: var(--mono); font-size: 9px;
+  color: rgba(255,255,255,0.2); margin-top: 20px; letter-spacing: 1px;
+}
+.login-back {
+  text-align: center; margin-top: 12px;
+  font-size: 11px; color: rgba(255,255,255,0.3);
+  cursor: pointer; font-family: var(--mono);
+}
+.login-back:hover { color: var(--gold); }
+
 /* ── HEADER ── */
 .header {
   background: var(--navy); padding: 0 40px;
@@ -147,19 +234,10 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   border-bottom: 1px solid rgba(184,148,42,0.2);
 }
 .header-brand { display: flex; align-items: center; gap: 14px; }
-.header-logo-img {
-  width: 32px; height: 32px; border-radius: 50%;
-  object-fit: cover; border: 1.5px solid rgba(255,255,255,0.2);
-}
+.header-logo-img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(255,255,255,0.2); }
 .header-divider { width: 1px; height: 24px; background: rgba(184,148,42,0.25); margin: 0 2px; }
-.header-main {
-  font-size: 13px; font-weight: 800; color: #fff;
-  letter-spacing: 2px; text-transform: uppercase;
-}
-.header-sub {
-  font-size: 9px; color: var(--gold); letter-spacing: 1px;
-  font-family: var(--mono); margin-top: 1px; text-transform: uppercase;
-}
+.header-main { font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 2px; text-transform: uppercase; }
+.header-sub { font-size: 9px; color: var(--gold); letter-spacing: 1px; font-family: var(--mono); margin-top: 1px; text-transform: uppercase; }
 .header-right { display: flex; align-items: center; gap: 14px; }
 .header-email { font-size: 10px; font-family: var(--mono); color: rgba(255,255,255,0.35); }
 .back-btn {
@@ -169,6 +247,13 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   cursor: pointer; transition: all .15s; letter-spacing: .3px;
 }
 .back-btn:hover { border-color: rgba(255,255,255,0.35); color: #fff; }
+.logout-btn {
+  background: transparent; border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.5); font-family: var(--sans); font-size: 10px;
+  font-weight: 600; padding: 5px 12px; border-radius: 6px;
+  cursor: pointer; transition: all .15s; letter-spacing: .3px;
+}
+.logout-btn:hover { border-color: rgba(255,255,255,0.35); color: #fff; }
 
 /* ── HERO ── */
 .hero {
@@ -176,43 +261,25 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   padding: 56px 40px 52px; position: relative; overflow: hidden;
 }
 .hero::before {
-  content: ''; position: absolute;
-  bottom: -80px; right: -80px;
+  content: ''; position: absolute; bottom: -80px; right: -80px;
   width: 400px; height: 400px; border-radius: 50%;
   background: radial-gradient(circle, rgba(184,148,42,0.07) 0%, transparent 70%);
   pointer-events: none;
 }
 .hero::after {
-  content: ''; position: absolute;
-  top: 0; left: 0; right: 0; height: 2px;
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 .hero-content { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; }
-.hero-eyebrow {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 3px;
-  color: var(--gold); text-transform: uppercase; margin-bottom: 14px;
-}
-.hero-title {
-  font-size: 42px; font-weight: 900; color: #fff;
-  line-height: 1.0; margin-bottom: 6px; letter-spacing: -1.5px;
-}
+.hero-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 14px; }
+.hero-title { font-size: 42px; font-weight: 900; color: #fff; line-height: 1.0; margin-bottom: 6px; letter-spacing: -1.5px; }
 .hero-title span { color: var(--gold); }
 .hero-line { width: 48px; height: 3px; background: var(--gold); margin: 18px 0; }
-.hero-tagline {
-  font-size: 13px; color: rgba(255,255,255,0.45);
-  font-style: italic; font-weight: 400; letter-spacing: 0.5px;
-  margin-bottom: 28px; max-width: 400px;
-}
+.hero-tagline { font-size: 13px; color: rgba(255,255,255,0.45); font-style: italic; font-weight: 400; letter-spacing: 0.5px; margin-bottom: 28px; max-width: 400px; }
 .hero-stats { display: flex; gap: 40px; }
 .hero-stat { display: flex; flex-direction: column; gap: 3px; }
-.hero-stat-n {
-  font-family: var(--mono); font-size: 28px; font-weight: 700;
-  color: #fff; line-height: 1;
-}
-.hero-stat-l {
-  font-size: 9px; color: rgba(255,255,255,0.35);
-  letter-spacing: 1.5px; text-transform: uppercase;
-}
+.hero-stat-n { font-family: var(--mono); font-size: 28px; font-weight: 700; color: #fff; line-height: 1; }
+.hero-stat-l { font-size: 9px; color: rgba(255,255,255,0.35); letter-spacing: 1.5px; text-transform: uppercase; }
 
 /* ── CONTENT ── */
 .content { max-width: 1200px; margin: 0 auto; padding: 40px 40px 64px; }
@@ -224,11 +291,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
 /* ── GRID ── */
-.modulos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px; margin-bottom: 40px;
-}
+.modulos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 40px; }
 
 /* ── CARD ── */
 .modulo-card {
@@ -237,93 +300,124 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   display: flex; flex-direction: column;
   box-shadow: 0 1px 4px rgba(11,22,41,0.06);
 }
-.card-accent-bar {
-  height: 3px;
-  background: var(--card-color, var(--blue));
-  flex-shrink: 0; opacity: 0; transition: opacity .2s;
-}
+.card-accent-bar { height: 3px; background: var(--card-color, var(--blue)); flex-shrink: 0; opacity: 0; transition: opacity .2s; }
 .modulo-card.activo { cursor: pointer; }
-.modulo-card.activo:hover {
-  border-color: var(--card-color, var(--blue));
-  box-shadow: 0 6px 24px rgba(11,22,41,0.12);
-  transform: translateY(-3px);
-}
+.modulo-card.activo:hover { border-color: var(--card-color, var(--blue)); box-shadow: 0 6px 24px rgba(11,22,41,0.12); transform: translateY(-3px); }
 .modulo-card.activo:hover .card-accent-bar { opacity: 1; }
 .modulo-card.proximamente { opacity: .75; }
 .modulo-card.sin-acceso { opacity: .4; cursor: not-allowed; }
-
 .card-inner { padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 12px; }
 .card-top { display: flex; align-items: flex-start; justify-content: space-between; }
-.card-icono {
-  width: 42px; height: 42px; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px; flex-shrink: 0;
-}
+.card-icono { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
 .card-badges { display: flex; gap: 6px; align-items: center; }
-.badge-activo {
-  font-family: var(--mono); font-size: 8px; font-weight: 700;
-  padding: 3px 8px; border-radius: 4px;
-  background: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0;
-  letter-spacing: .5px; text-transform: uppercase;
-}
-.badge-prox {
-  font-family: var(--mono); font-size: 8px; font-weight: 700;
-  padding: 3px 8px; border-radius: 4px;
-  background: #F3F4F6; color: #6B7280; border: 1px solid #E5E7EB;
-  letter-spacing: .5px; text-transform: uppercase;
-}
-.badge-sin {
-  font-family: var(--mono); font-size: 8px; font-weight: 700;
-  padding: 3px 8px; border-radius: 4px;
-  background: #FEE2E2; color: #991B1B; border: 1px solid #FECACA;
-  letter-spacing: .5px; text-transform: uppercase;
-}
+.badge-activo { font-family: var(--mono); font-size: 8px; font-weight: 700; padding: 3px 8px; border-radius: 4px; background: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; letter-spacing: .5px; text-transform: uppercase; }
+.badge-prox   { font-family: var(--mono); font-size: 8px; font-weight: 700; padding: 3px 8px; border-radius: 4px; background: #F3F4F6; color: #6B7280; border: 1px solid #E5E7EB; letter-spacing: .5px; text-transform: uppercase; }
+.badge-sin    { font-family: var(--mono); font-size: 8px; font-weight: 700; padding: 3px 8px; border-radius: 4px; background: #FEE2E2; color: #991B1B; border: 1px solid #FECACA; letter-spacing: .5px; text-transform: uppercase; }
 .card-body { flex: 1; }
 .card-nombre { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 6px; line-height: 1.3; }
 .card-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
 .card-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 10px; }
-.card-tag {
-  font-family: var(--mono); font-size: 9px; padding: 2px 7px;
-  background: #F0F4F8; border: 1px solid var(--border);
-  border-radius: 4px; color: var(--muted);
-}
-.card-footer {
-  padding: 12px 20px; border-top: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  background: #FAFBFC;
-}
-.card-link {
-  font-size: 11px; font-weight: 700; letter-spacing: .3px;
-  text-transform: uppercase;
-}
+.card-tag { font-family: var(--mono); font-size: 9px; padding: 2px 7px; background: #F0F4F8; border: 1px solid var(--border); border-radius: 4px; color: var(--muted); }
+.card-footer { padding: 12px 20px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: #FAFBFC; }
+.card-link { font-size: 11px; font-weight: 700; letter-spacing: .3px; text-transform: uppercase; }
 .card-link-disabled { font-size: 11px; font-weight: 500; color: var(--muted); letter-spacing: .3px; }
 
 /* ── FOOTER ── */
-.portal-footer {
-  border-top: 1px solid rgba(184,148,42,0.2);
-  padding: 20px 40px; display: flex; align-items: center;
-  justify-content: space-between; background: var(--navy);
-}
-.footer-left { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.25); }
+.portal-footer { border-top: 1px solid rgba(184,148,42,0.2); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--navy); }
+.footer-left  { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.25); }
 .footer-right { font-family: var(--mono); font-size: 10px; color: var(--gold); opacity: 0.5; }
 
 /* ── LOADING ── */
-.loading {
-  min-height: 100vh; display: flex; align-items: center;
-  justify-content: center; background: var(--navy);
-}
-.loading-text {
-  font-family: var(--mono); font-size: 10px;
-  color: rgba(255,255,255,0.3); letter-spacing: 3px; text-transform: uppercase;
-}
+.loading { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--navy); }
+.loading-text { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 3px; text-transform: uppercase; }
 `;
+
+// ─── LOGIN ────────────────────────────────────────────────────────────────────
+function LoginPage() {
+  const [email, setEmail]     = useState("");
+  const [pass, setPass]       = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError]     = useState("");
+
+  const handleLogin = async () => {
+    setLoading(true); setError("");
+    try {
+      const { error: e } = await supabase.auth.signInWithPassword({ email, password: pass });
+      if (e) setError("Credenciales incorrectas. Verificá tu email y contraseña.");
+    } catch {
+      setError("Error de conexión. Verificá tu red e intentá nuevamente.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleKey = (e) => { if (e.key === "Enter") handleLogin(); };
+
+  return (
+    <div className="login-page">
+      <div className="login-bg-lines" />
+      <div className="login-bg-overlay" />
+      <div className="login-split">
+        {/* LEFT */}
+        <div className="login-left">
+          <div className="login-left-eyebrow">Portal de gestión</div>
+          <div className="login-left-logo">
+            <img src="/Logo-PL.png" alt="Parana Logística" />
+          </div>
+          <div className="login-left-title">
+            PARANA<span>LOGÍSTICA</span>
+          </div>
+          <div className="login-left-line" />
+          <div className="login-left-sub">
+            We Find the Way, or We Make One.
+          </div>
+        </div>
+
+        {/* RIGHT */}
+        <div className="login-right">
+          <div className="login-card">
+            <div className="login-card-title">Acceso al portal</div>
+            <div className="login-card-sub">Solo personal autorizado</div>
+            {error && <div className="login-error">{error}</div>}
+            <div className="login-fg">
+              <label>Email</label>
+              <input
+                type="email" value={email}
+                onChange={e => setEmail(e.target.value)}
+                onKeyDown={handleKey}
+                placeholder="usuario@paranalogistica.com.ar"
+                autoFocus
+              />
+            </div>
+            <div className="login-fg">
+              <label>Contraseña</label>
+              <input
+                type="password" value={pass}
+                onChange={e => setPass(e.target.value)}
+                onKeyDown={handleKey}
+                placeholder="••••••••"
+              />
+            </div>
+            <button className="login-btn" onClick={handleLogin} disabled={loading || !email || !pass}>
+              {loading ? "Ingresando..." : "Ingresar →"}
+            </button>
+            <div className="login-footer">Parana Logística · Acceso restringido</div>
+            <div className="login-back" onClick={() => window.location.href = ERP_HOME_URL}>
+              ← Volver a Grupo PL
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // ─── MODULO CARD ─────────────────────────────────────────────────────────────
 function ModuloCard({ mod, tieneAcceso }) {
   const isActivo   = mod.status === "activo";
   const puedeAbrir = isActivo && mod.url && tieneAcceso;
 
-  const handleClick = () => { if (puedeAbrir) window.open(mod.url, "_self"); };
+  const handleClick = () => { if (puedeAbrir) window.location.href = mod.url; };
 
   let clase = `modulo-card ${mod.status}`;
   if (isActivo && !tieneAcceso) clase = "modulo-card sin-acceso";
@@ -367,19 +461,24 @@ function ModuloCard({ mod, tieneAcceso }) {
 
 // ─── APP ──────────────────────────────────────────────────────────────────────
 export default function App() {
-  const [modulosPermitidos, setModulosPermitidos] = useState(null);
-  const [userEmail, setUserEmail]                 = useState("");
-  const [loading, setLoading]                     = useState(true);
+  const [session, setSession]                       = useState(null);
+  const [modulosPermitidos, setModulosPermitidos]   = useState(null);
+  const [loading, setLoading]                       = useState(true);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        setUserEmail(session.user.email);
-        loadPermisos(session.user.id);
-      } else {
-        window.location.href = ERP_HOME_URL;
-      }
+      setSession(session);
+      if (session) loadPermisos(session.user.id);
+      else setLoading(false);
     });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      if (session) loadPermisos(session.user.id);
+      else { setModulosPermitidos(null); setLoading(false); }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const loadPermisos = async (userId) => {
@@ -394,6 +493,8 @@ export default function App() {
       setLoading(false);
     }
   };
+
+  const handleLogout = async () => { await supabase.auth.signOut(); };
 
   const tieneAcceso = (moduloId) => {
     if (!modulosPermitidos) return true;
@@ -412,6 +513,15 @@ export default function App() {
     );
   }
 
+  if (!session) {
+    return (
+      <>
+        <style>{CSS}</style>
+        <LoginPage />
+      </>
+    );
+  }
+
   return (
     <>
       <style>{CSS}</style>
@@ -426,19 +536,18 @@ export default function App() {
           </div>
         </div>
         <div className="header-right">
-          {userEmail && <span className="header-email">{userEmail}</span>}
-          <button className="back-btn" onClick={() => window.open(ERP_HOME_URL, "_self")}>
+          <span className="header-email">{session.user.email}</span>
+          <button className="back-btn" onClick={() => window.location.href = ERP_HOME_URL}>
             ← Grupo PL
           </button>
+          <button className="logout-btn" onClick={handleLogout}>Cerrar sesión</button>
         </div>
       </header>
 
       <div className="hero">
         <div className="hero-content">
           <div className="hero-eyebrow">Portal de gestión · Parana Logística</div>
-          <h1 className="hero-title">
-            <span>Parana</span> Logística
-          </h1>
+          <h1 className="hero-title"><span>Parana</span> Logística</h1>
           <div className="hero-line" />
           <div className="hero-tagline">We Find the Way, or We Make One.</div>
           <div className="hero-stats">
@@ -465,7 +574,6 @@ export default function App() {
             <ModuloCard key={mod.id} mod={mod} tieneAcceso={tieneAcceso(mod.id)} />
           ))}
         </div>
-
         <div className="section-label" style={{ marginTop: 8 }}>Próximamente</div>
         <div className="modulos-grid">
           {proximos.map(mod => (
