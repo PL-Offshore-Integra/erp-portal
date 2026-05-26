@@ -419,7 +419,7 @@ export default function App() {
 
       <header className="header">
         <div className="header-brand">
-          <img src="/PL.png" alt="Parana Logística" className="header-logo-img" />
+          <img src="/Logo-PL.png" alt="Parana Logística" className="header-logo-img" />
           <div className="header-divider" />
           <div>
             <div className="header-main">Parana Logística</div>
