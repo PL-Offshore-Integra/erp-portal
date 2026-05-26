@@ -377,8 +377,7 @@ export default function App() {
         setUserEmail(session.user.email);
         loadPermisos(session.user.id);
       } else {
-        setModulosPermitidos(null);
-        setLoading(false);
+        window.location.href = ERP_HOME_URL;
       }
     });
   }, []);
