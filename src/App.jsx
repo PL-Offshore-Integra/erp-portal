@@ -65,6 +65,16 @@ const MODULOS = [
     tags: ["Estatutarios", "Equipos", "Vencimientos"],
   },
   {
+    id: "cost-tracker",
+    nombre: "Cost Project Tracker",
+    descripcion: "Control de costos, órdenes de compra, márgenes y cashflow de proyectos en tiempo real.",
+    icono: "💰",
+    status: "activo",
+    url: "https://cost-tracker-gamma.vercel.app",
+    color: "#B8942A",
+    tags: ["Proyectos", "OC", "Márgenes"],
+  },
+  {
     id: "pipeline",
     nombre: "Pipeline de Oportunidades",
     descripcion: "CRM comercial para seguimiento de licitaciones, propuestas y oportunidades de negocio.",
