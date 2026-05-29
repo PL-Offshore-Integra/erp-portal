@@ -170,6 +170,12 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   flex: 1; display: flex; flex-direction: column; justify-content: center;
   padding: 80px 60px; border-right: 1px solid rgba(184,148,42,0.15);
 }
+.login-left-integra-wrap { margin-bottom: 8px; }
+.login-left-integra-img  { height: 340px; width: auto; object-fit: contain; opacity: 0.95; }
+.login-left-divider { width: 100%; height: 1px; background: rgba(255,255,255,0.1); margin: 8px 0 20px; }
+.login-left-company { display: flex; align-items: center; gap: 14px; margin-bottom: 4px; }
+.login-left-company-logo { width: 48px; height: 48px; border-radius: 10px; object-fit: cover; border: 1.5px solid rgba(255,255,255,0.2); }
+.login-left-company-name { font-size: 20px; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
 .login-left-eyebrow {
   font-family: var(--mono); font-size: 10px; letter-spacing: 3px;
   color: var(--gold); text-transform: uppercase; margin-bottom: 20px;
@@ -370,12 +376,13 @@ function LoginPage() {
       <div className="login-split">
         {/* LEFT */}
         <div className="login-left">
-          <div className="login-left-eyebrow">Portal de gestión</div>
-          <div className="login-left-logo">
-            <img src="/Logo-PL.png" alt="Parana Logística" />
+          <div className="login-left-integra-wrap">
+            <img src="/integralogo.png" alt="INTEGRA" className="login-left-integra-img" />
           </div>
-          <div className="login-left-title">
-            PARANA<span>LOGÍSTICA</span>
+          <div className="login-left-divider" />
+          <div className="login-left-company">
+            <img src="/Logo-PL.png" alt="Parana Logística" className="login-left-company-logo" />
+            <div className="login-left-company-name">Parana Logística</div>
           </div>
           <div className="login-left-line" />
           <div className="login-left-sub">
