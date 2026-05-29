@@ -249,6 +249,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   height: 60px; position: sticky; top: 0; z-index: 10;
   border-bottom: 1px solid rgba(184,148,42,0.2);
 }
+.header-integra-img { height: 44px; width: auto; object-fit: contain; opacity: 0.95; }
 .header-brand { display: flex; align-items: center; gap: 14px; }
 .header-logo-img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(255,255,255,0.2); }
 .header-divider { width: 1px; height: 24px; background: rgba(184,148,42,0.25); margin: 0 2px; }
@@ -545,12 +546,7 @@ export default function App() {
 
       <header className="header">
         <div className="header-brand">
-          <img src="/Logo-PL.png" alt="Parana Logística" className="header-logo-img" />
-          <div className="header-divider" />
-          <div>
-            <div className="header-main">Parana Logística</div>
-            <div className="header-sub">Portal de gestión</div>
-          </div>
+          <img src="/integralogo.png" alt="INTEGRA" className="header-integra-img" />
         </div>
         <div className="header-right">
           <span className="header-email">{session.user.email}</span>
