@@ -403,8 +403,8 @@ function LoginPage() {
           </div>
           <div className="login-left-divider" />
           <div className="login-left-company">
-            <img src="/Logo-PL.png" alt="Parana Logística" className="login-left-company-logo" />
-            <div className="login-left-company-name">Parana Logística</div>
+            <img src="/PL.png" alt="PL Offshore" className="login-left-company-logo" />
+            <div className="login-left-company-name">PL Offshore</div>
           </div>
           <div className="login-left-line" />
           <div className="login-left-sub">
@@ -440,7 +440,7 @@ function LoginPage() {
             <button className="login-btn" onClick={handleLogin} disabled={loading || !email || !pass}>
               {loading ? "Ingresando..." : "Ingresar →"}
             </button>
-            <div className="login-footer">Parana Logística · Acceso restringido</div>
+            <div className="login-footer">PL Offshore · Acceso restringido</div>
             <div className="login-back" onClick={() => window.location.href = ERP_HOME_URL}>
               ← Volver a Grupo PL
             </div>
@@ -602,7 +602,7 @@ export default function App() {
       </div>
 
       <footer className="portal-footer">
-        <div className="footer-left">Parana Logística · Sistema de Gestión · Confidencial</div>
+        <div className="footer-left">PL Offshore · Sistema de Gestión · Confidencial</div>
         <div className="footer-right">v2.0 — {new Date().getFullYear()}</div>
       </footer>
     </>
