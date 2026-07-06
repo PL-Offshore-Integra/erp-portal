@@ -99,10 +99,10 @@ const MODULOS = [
     nombre: "HSQE",
     descripcion: "Control de certificaciones, vencimientos, inspecciones, incidentes y cumplimiento normativo.",
     icono: "🛡️",
-    status: "proximamente",
-    url: null,
+    status: "activo",
+    url: "https://hsqe-pl-offshore.vercel.app",
     color: "#C0392B",
-    tags: ["Seguridad", "ISO", "Certificaciones"],
+    tags: ["Seguridad", "Incidentes", "OCIMF"],
   },
   {
     id: "documentos",
