@@ -1,379 +1,60 @@
 import { useState, useEffect } from "react";
 import { supabase } from "./lib/supabase";
 
-const ERP_HOME_URL = "https://integra.terra-mare.com.ar";
-
+/* Módulos de la instancia PL Offshore.
+   El código mono reemplaza al icono: es la convención de la marca. */
 const MODULOS = [
-  {
-    id: "compras",
-    nombre: "Sistema de Compras",
-    descripcion: "Requisiciones, tracker de OC, proveedores y KPIs de compras.",
-    icono: "🛒",
-    status: "activo",
-    url: "https://integra.compras.ploffshore.com",
-    color: "#235C96",
-    tags: ["Requisiciones", "Proveedores", "KPIs"],
-  },
-  {
-    id: "viveres",
-    nombre: "Víveres",
-    descripcion: "Pedidos de víveres para embarcaciones con control de dieta nutricional y cálculo USD/cabeza/día.",
-    icono: "🍱",
-    status: "activo",
-    url: "https://integra.viveres.ploffshore.com",
-    color: "#1A7A6E",
-    tags: ["Embarcaciones", "Catering"],
-  },
-  {
-    id: "projects",
-    nombre: "Projects",
-    descripcion: "Gestión de proyectos con Diagrama de Gantt, camino crítico y seguimiento de tareas.",
-    icono: "📋",
-    status: "activo",
-    url: "https://integra.projects.ploffshore.com",
-    color: "#6B4FA0",
-    tags: ["Gantt", "Camino crítico"],
-  },
-  {
-    id: "mantenimiento",
-    nombre: "Mantenimiento",
-    descripcion: "Mantenimiento preventivo y correctivo de la flota con historial técnico por embarcación.",
-    icono: "⚙️",
-    status: "activo",
-    url: "https://integra.mantenimiento.ploffshore.com",
-    color: "#374151",
-    tags: ["Preventivo", "Correctivo", "Flota"],
-  },
-  {
-    id: "reparaciones",
-    nombre: "Solicitudes de Reparación",
-    descripcion: "Gestión de solicitudes de reparación por barco. Panel de control para el superintendente técnico.",
-    icono: "🔧",
-    status: "activo",
-    url: "https://integra.ssrr.ploffshore.com",
-    color: "#B07D0A",
-    tags: ["Embarcaciones", "SSRR"],
-  },
-  {
-    id: "certificados",
-    nombre: "Certificados",
-    descripcion: "Seguimiento de certificados estatutarios y de equipos de la flota. Alertas de vencimientos.",
-    icono: "📜",
-    status: "activo",
-    url: "https://integra.certificados.ploffshore.com",
-    color: "#0E7490",
-    tags: ["Estatutarios", "Equipos", "Vencimientos"],
-  },
-  {
-    id: "cost-tracker",
-    nombre: "Cost Project Tracker",
-    descripcion: "Control de costos, órdenes de compra, márgenes y cashflow de proyectos en tiempo real.",
-    icono: "💰",
-    status: "activo",
-    url: "https://integra.costtracker.ploffshore.com",
-    color: "#B8942A",
-    tags: ["Proyectos", "OC", "Márgenes"],
-  },
-  {
-    id: "pipeline",
-    nombre: "Pipeline de Oportunidades",
-    descripcion: "CRM comercial para seguimiento de licitaciones, propuestas y oportunidades de negocio.",
-    icono: "📈",
-    status: "proximamente",
-    url: null,
-    color: "#C05621",
-    tags: ["Ventas", "Licitaciones"],
-  },
-  {
-    id: "tripulaciones",
-    nombre: "Optimizador de Tripulaciones",
-    descripcion: "Gestión del personal embarcado, rotaciones, documentación y liquidaciones.",
-    icono: "👥",
-    status: "proximamente",
-    url: null,
-    color: "#B07D0A",
-    tags: ["RRHH", "Embarcaciones"],
-  },
-  {
-    id: "hsqe",
-    nombre: "HSQE",
-    descripcion: "Control de certificaciones, vencimientos, inspecciones, incidentes y cumplimiento normativo.",
-    icono: "🛡️",
-    status: "activo",
-    url: "https://hsqe-pl-offshore.vercel.app",
-    color: "#C0392B",
-    tags: ["Seguridad", "Incidentes", "OCIMF"],
-  },
-  {
-    id: "documentos",
-    nombre: "Control Documentario",
-    descripcion: "Gestión centralizada de documentación técnica, legal y operativa.",
-    icono: "📁",
-    status: "proximamente",
-    url: null,
-    color: "#0E7490",
-    tags: ["Documentos", "Compliance"],
-  },
-  {
-    id: "dashboards",
-    nombre: "Dashboards",
-    descripcion: "Panel ejecutivo con KPIs consolidados de todos los módulos para toma de decisiones.",
-    icono: "📊",
-    status: "proximamente",
-    url: null,
-    color: "#213363",
-    tags: ["Reportes", "KPIs"],
-  },
+  { id:"compras", codigo:"COMP", nombre:"Sistema de Compras",
+    descripcion:"Requisiciones, tracker de órdenes de compra, proveedores y KPIs.",
+    status:"activo", url:"https://integra.compras.ploffshore.com",
+    tags:["Requisiciones","Proveedores","KPIs"] },
+  { id:"viveres", codigo:"VIV", nombre:"Víveres",
+    descripcion:"Pedidos de víveres por embarcación, control de dieta y cálculo USD por cabeza y día.",
+    status:"activo", url:"https://integra.viveres.ploffshore.com",
+    tags:["Embarcaciones","Catering"] },
+  { id:"projects", codigo:"PROJ", nombre:"Projects",
+    descripcion:"Gestión de proyectos con diagrama de Gantt, camino crítico y seguimiento de tareas.",
+    status:"activo", url:"https://integra.projects.ploffshore.com",
+    tags:["Gantt","Camino crítico"] },
+  { id:"mantenimiento", codigo:"MANT", nombre:"Mantenimiento",
+    descripcion:"Mantenimiento preventivo y correctivo de la flota con historial técnico por embarcación.",
+    status:"activo", url:"https://integra.mantenimiento.ploffshore.com",
+    tags:["Preventivo","Correctivo","Flota"] },
+  { id:"reparaciones", codigo:"SSRR", nombre:"Solicitudes de Reparación",
+    descripcion:"Solicitudes de reparación por barco y panel de control del superintendente técnico.",
+    status:"activo", url:"https://integra.ssrr.ploffshore.com",
+    tags:["Embarcaciones","SSRR"] },
+  { id:"certificados", codigo:"CERT", nombre:"Certificados",
+    descripcion:"Certificados estatutarios y de equipos de la flota, con aviso de vencimientos.",
+    status:"activo", url:"https://integra.certificados.ploffshore.com",
+    tags:["Estatutarios","Equipos","Vencimientos"] },
+  { id:"cost-tracker", codigo:"COST", nombre:"Cost Project Tracker",
+    descripcion:"Control de costos, órdenes de compra, márgenes y cashflow de proyectos.",
+    status:"activo", url:"https://integra.costtracker.ploffshore.com",
+    tags:["Proyectos","OC","Márgenes"] },
+  { id:"hsqe", codigo:"HSQE", nombre:"HSQE",
+    descripcion:"Certificaciones, vencimientos, inspecciones, incidentes y cumplimiento normativo.",
+    status:"activo", url:"https://hsqe-pl-offshore.vercel.app",
+    tags:["Seguridad","Incidentes","OCIMF"] },
+  { id:"pipeline", codigo:"PIPE", nombre:"Pipeline de Oportunidades",
+    descripcion:"Seguimiento comercial de licitaciones, propuestas y oportunidades de negocio.",
+    status:"proximamente", url:null, tags:["Comercial","Licitaciones"] },
+  { id:"tripulaciones", codigo:"CREW", nombre:"Optimizador de Tripulaciones",
+    descripcion:"Personal embarcado, rotaciones, documentación y liquidaciones.",
+    status:"proximamente", url:null, tags:["Personal","Embarcaciones"] },
+  { id:"documentos", codigo:"DOC", nombre:"Control Documentario",
+    descripcion:"Documentación técnica, legal y operativa centralizada.",
+    status:"proximamente", url:null, tags:["Documentos","Cumplimiento"] },
+  { id:"dashboards", codigo:"DASH", nombre:"Dashboards",
+    descripcion:"Panel ejecutivo con KPIs consolidados de todos los módulos.",
+    status:"proximamente", url:null, tags:["Reportes","KPIs"] },
 ];
 
-// ─── CSS ──────────────────────────────────────────────────────────────────────
-const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap');
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --navy:    #0B1629;
-  --navy2:   #132040;
-  --navy3:   #1a2a5e;
-  --gold:    #B8942A;
-  --gold2:   #D4AA3A;
-  --blue:    #235C96;
-  --mid:     #6381A7;
-  --light:   #A5B5CC;
-  --bg:      #F0F4F8;
-  --surface: #FFFFFF;
-  --border:  #D6E0ED;
-  --text:    #0B1629;
-  --muted:   #6381A7;
-  --sans:    'Montserrat', sans-serif;
-  --mono:    'DM Mono', monospace;
-}
-body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; }
-
-/* ── LOGIN ── */
-.login-page {
-  min-height: 100vh; display: flex;
-  background: var(--navy); position: relative; overflow: hidden;
-}
-.login-bg-overlay {
-  position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(135deg, rgba(11,22,41,0.92) 0%, rgba(11,22,41,0.75) 60%, rgba(11,22,41,0.92) 100%);
-}
-.login-bg-lines {
-  position: absolute; inset: 0; z-index: 0;
-  background-image:
-    linear-gradient(rgba(26,122,110,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(26,122,110,0.06) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-.login-split { position: relative; z-index: 2; display: flex; width: 100%; }
-.login-left {
-  flex: 1; display: flex; flex-direction: column; justify-content: center;
-  padding: 80px 60px; border-right: 1px solid rgba(26,122,110,0.2);
-}
-.login-left-integra-wrap { margin-bottom: 8px; }
-.login-left-integra-img  { height: 340px; width: auto; object-fit: contain; opacity: 0.95; }
-.login-left-divider { width: 100%; height: 1px; background: rgba(255,255,255,0.1); margin: 8px 0 20px; }
-.login-left-company { display: flex; align-items: center; gap: 14px; margin-bottom: 4px; }
-.login-left-company-logo { width: 48px; height: 48px; border-radius: 50%; object-fit: contain; border: 1.5px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); }
-.login-left-company-name { font-size: 20px; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
-.login-left-eyebrow {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 3px;
-  color: var(--gold); text-transform: uppercase; margin-bottom: 20px;
-}
-.login-left-logo { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
-.login-left-logo img { width: 52px; height: 52px; border-radius: 12px; object-fit: cover; border: 2px solid rgba(255,255,255,0.15); }
-.login-left-title {
-  font-size: 52px; font-weight: 900; color: #fff;
-  line-height: 0.95; letter-spacing: -2px; margin-bottom: 0;
-}
-.login-left-title span { color: var(--gold); display: block; }
-.login-left-line { width: 48px; height: 3px; background: #1A7A6E; margin: 20px 0; }
-.login-left-sub {
-  font-size: 13px; color: rgba(255,255,255,0.45);
-  line-height: 1.7; max-width: 320px; font-style: italic;
-}
-.login-right {
-  width: 440px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  padding: 60px 48px;
-}
-.login-card {
-  width: 100%; background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(184,148,42,0.2); border-radius: 16px;
-  padding: 40px 36px; backdrop-filter: blur(20px);
-}
-.login-card-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
-.login-card-sub {
-  font-family: var(--mono); font-size: 10px;
-  color: rgba(255,255,255,0.35); letter-spacing: 1px;
-  margin-bottom: 28px; text-transform: uppercase;
-}
-.login-fg { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
-.login-fg label { font-size: 9px; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
-.login-fg input {
-  border: 1px solid rgba(255,255,255,0.12); border-radius: 8px;
-  padding: 11px 14px; font-size: 13px; font-family: var(--sans);
-  color: #fff; background: rgba(255,255,255,0.06); outline: none; transition: border-color .15s;
-}
-.login-fg input::placeholder { color: rgba(255,255,255,0.2); }
-.login-fg input:focus { border-color: var(--gold); background: rgba(255,255,255,0.09); }
-.login-btn {
-  width: 100%; padding: 12px; margin-top: 8px;
-  background: var(--gold); color: var(--navy);
-  border: none; border-radius: 8px;
-  font-family: var(--sans); font-size: 13px; font-weight: 700;
-  cursor: pointer; transition: background .15s; letter-spacing: .5px;
-}
-.login-btn:hover { background: var(--gold2); }
-.login-btn:disabled { opacity: .5; cursor: not-allowed; }
-.login-error {
-  background: rgba(239,68,68,0.12); color: #FCA5A5;
-  border: 1px solid rgba(239,68,68,0.25); border-radius: 8px;
-  padding: 10px 14px; font-size: 12px; margin-bottom: 14px;
-}
-.login-footer {
-  text-align: center; font-family: var(--mono); font-size: 9px;
-  color: rgba(255,255,255,0.2); margin-top: 20px; letter-spacing: 1px;
-}
-.login-back {
-  text-align: center; margin-top: 12px;
-  font-size: 11px; color: rgba(255,255,255,0.3);
-  cursor: pointer; font-family: var(--mono);
-}
-.login-back:hover { color: var(--gold); }
-
-/* ── HEADER ── */
-.header {
-  background: var(--navy); padding: 0 40px;
-  display: flex; align-items: center; justify-content: space-between;
-  height: 60px; position: sticky; top: 0; z-index: 10;
-  border-bottom: 1px solid rgba(184,148,42,0.2);
-}
-.header-integra-img { height: 44px; width: auto; object-fit: contain; opacity: 0.95; }
-.header-brand { display: flex; align-items: center; gap: 14px; }
-.header-logo-img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(255,255,255,0.2); }
-.header-divider { width: 1px; height: 24px; background: rgba(184,148,42,0.25); margin: 0 2px; }
-.header-main { font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 2px; text-transform: uppercase; }
-.header-sub { font-size: 9px; color: var(--gold); letter-spacing: 1px; font-family: var(--mono); margin-top: 1px; text-transform: uppercase; }
-.header-right { display: flex; align-items: center; gap: 14px; }
-.header-email { font-size: 10px; font-family: var(--mono); color: rgba(255,255,255,0.35); }
-.back-btn {
-  background: transparent; border: 1px solid rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.5); font-family: var(--sans); font-size: 10px;
-  font-weight: 600; padding: 5px 12px; border-radius: 6px;
-  cursor: pointer; transition: all .15s; letter-spacing: .3px;
-}
-.back-btn:hover { border-color: rgba(255,255,255,0.35); color: #fff; }
-.logout-btn {
-  background: transparent; border: 1px solid rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.5); font-family: var(--sans); font-size: 10px;
-  font-weight: 600; padding: 5px 12px; border-radius: 6px;
-  cursor: pointer; transition: all .15s; letter-spacing: .3px;
-}
-.logout-btn:hover { border-color: rgba(255,255,255,0.35); color: #fff; }
-
-/* ── HERO ── */
-.hero {
-  background: linear-gradient(160deg, #0D1B2E 0%, #132040 60%, #213363 100%);
-  padding: 28px 40px 24px; position: relative; overflow: hidden;
-  height: 370px; display: flex; align-items: center;
-}
-.hero::before {
-  content: ''; position: absolute; bottom: -80px; right: -80px;
-  width: 400px; height: 400px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(26,122,110,0.10) 0%, transparent 70%);
-  pointer-events: none;
-}
-.hero::after {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, #1A7A6E, transparent);
-}
-.hero-logo-wrap { margin: 0; }
-.hero-logo-img  { height: 340px; width: auto; object-fit: contain; }
-.hero-content { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; }
-.hero-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 14px; }
-.hero-title { font-size: 42px; font-weight: 900; color: #fff; line-height: 1.0; margin-bottom: 6px; letter-spacing: -1.5px; }
-.hero-title span { color: var(--gold); }
-.hero-line { width: 48px; height: 3px; background: var(--gold); margin: 18px 0; }
-.hero-tagline { font-size: 13px; color: rgba(255,255,255,0.45); font-style: italic; font-weight: 400; letter-spacing: 0.5px; margin-bottom: 28px; max-width: 400px; }
-.hero-stats { display: flex; gap: 40px; }
-.hero-stat { display: flex; flex-direction: column; gap: 3px; }
-.hero-stat-n { font-family: var(--mono); font-size: 28px; font-weight: 700; color: #fff; line-height: 1; }
-.hero-stat-l { font-size: 9px; color: rgba(255,255,255,0.35); letter-spacing: 1.5px; text-transform: uppercase; }
-
-/* ── CONTENT ── */
-.content { max-width: 1200px; margin: 0 auto; padding: 40px 40px 64px; }
-.section-label {
-  font-family: var(--mono); font-size: 9px; letter-spacing: 2.5px;
-  color: var(--muted); text-transform: uppercase; margin-bottom: 20px;
-  display: flex; align-items: center; gap: 10px;
-}
-.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
-/* ── GRID ── */
-.modulos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 40px; }
-
-/* ── CARD ── */
-.modulo-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; overflow: hidden; transition: all .2s;
-  display: flex; flex-direction: column;
-  box-shadow: 0 1px 4px rgba(11,22,41,0.06);
-}
-.card-accent-bar { height: 3px; background: var(--card-color, var(--blue)); flex-shrink: 0; opacity: 0; transition: opacity .2s; }
-.modulo-card.activo { cursor: pointer; }
-.modulo-card.activo:hover { border-color: var(--card-color, var(--blue)); box-shadow: 0 6px 24px rgba(11,22,41,0.12); transform: translateY(-3px); }
-.modulo-card.activo:hover .card-accent-bar { opacity: 1; }
-.modulo-card.proximamente { opacity: .75; }
-.modulo-card.sin-acceso { opacity: .4; cursor: not-allowed; }
-.card-inner { padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 12px; }
-.card-top { display: flex; align-items: flex-start; justify-content: space-between; }
-.card-icono { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
-.card-badges { display: flex; gap: 6px; align-items: center; }
-.badge-activo { font-family: var(--mono); font-size: 8px; font-weight: 700; padding: 3px 8px; border-radius: 4px; background: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; letter-spacing: .5px; text-transform: uppercase; }
-.badge-prox   { font-family: var(--mono); font-size: 8px; font-weight: 700; padding: 3px 8px; border-radius: 4px; background: #F3F4F6; color: #6B7280; border: 1px solid #E5E7EB; letter-spacing: .5px; text-transform: uppercase; }
-.badge-sin    { font-family: var(--mono); font-size: 8px; font-weight: 700; padding: 3px 8px; border-radius: 4px; background: #FEE2E2; color: #991B1B; border: 1px solid #FECACA; letter-spacing: .5px; text-transform: uppercase; }
-.card-body { flex: 1; }
-.card-nombre { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 6px; line-height: 1.3; }
-.card-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
-.card-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 10px; }
-.card-tag { font-family: var(--mono); font-size: 9px; padding: 2px 7px; background: #F0F4F8; border: 1px solid var(--border); border-radius: 4px; color: var(--muted); }
-.card-footer { padding: 12px 20px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: #FAFBFC; }
-.card-link { font-size: 11px; font-weight: 700; letter-spacing: .3px; text-transform: uppercase; }
-.card-link-disabled { font-size: 11px; font-weight: 500; color: var(--muted); letter-spacing: .3px; }
-
-/* ── FOOTER ── */
-.portal-footer { border-top: 1px solid rgba(26,122,110,0.2); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--navy); }
-.footer-left  { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.25); }
-.footer-right { font-family: var(--mono); font-size: 10px; color: var(--teal2); opacity: 0.6; }
-
-@media (max-width: 768px) {
-  .login-split { flex-direction: column; }
-  .login-left { padding: 48px 32px 32px; border-right: none; border-bottom: 1px solid rgba(26,122,110,0.2); align-items: center; text-align: center; }
-  .login-left-integra-img { height: 200px; max-width: 90vw; }
-  .login-left-line { margin: 16px auto; }
-  .login-left-sub { max-width: 100%; }
-  .login-right { width: 100%; padding: 32px 24px 48px; }
-  .login-card { padding: 28px 24px; }
-  .hero { height: auto !important; padding: 24px 20px; }
-  .hero-logo-img { height: 160px; max-width: 90vw; }
-  .hero-content { text-align: center; }
-  .header { padding: 0 16px; height: 52px; }
-  .header-integra-img { height: 32px; }
-  .content { padding: 24px 16px 48px; }
-  .modulos-grid { grid-template-columns: 1fr; }
-  .portal-footer { padding: 16px 20px; flex-direction: column; gap: 6px; text-align: center; }
-}
-
-/* ── LOADING ── */
-.loading { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--navy); }
-.loading-text { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 3px; text-transform: uppercase; }
-`;
-
-// ─── LOGIN ────────────────────────────────────────────────────────────────────
+/* ─── LOGIN ─────────────────────────────────────────────────────────────────── */
 function LoginPage() {
   const [email, setEmail]     = useState("");
   const [pass, setPass]       = useState("");
+  const [show, setShow]       = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState("");
 
@@ -381,9 +62,9 @@ function LoginPage() {
     setLoading(true); setError("");
     try {
       const { error: e } = await supabase.auth.signInWithPassword({ email, password: pass });
-      if (e) setError("Credenciales incorrectas. Verificá tu email y contraseña.");
+      if (e) setError("Revisá el correo y la contraseña. La cuenta no coincide.");
     } catch {
-      setError("Error de conexión. Verificá tu red e intentá nuevamente.");
+      setError("No se pudo conectar con el servidor. Verificá tu red e intentá de nuevo.");
     } finally {
       setLoading(false);
     }
@@ -393,116 +74,155 @@ function LoginPage() {
 
   return (
     <div className="login-page">
-      <div className="login-bg-lines" />
-      <div className="login-bg-overlay" />
-      <div className="login-split">
-        {/* LEFT */}
-        <div className="login-left">
-          <div className="login-left-integra-wrap">
-            <img src="/integralogo.png" alt="INTEGRA" className="login-left-integra-img" />
-          </div>
-          <div className="login-left-divider" />
-          <div className="login-left-company">
-            <img src="/PL.png" alt="PL Offshore" className="login-left-company-logo" />
-            <div className="login-left-company-name">PL Offshore</div>
-          </div>
-          <div className="login-left-line" />
-          <div className="login-left-sub">
-            We Find the Way, or We Make One.
+      <section className="login-brand">
+        <div className="login-brand-top">
+          <img src="/ploffshore-blanco.png" alt="PL Offshore" className="login-brand-logo" />
+          <div className="login-env">
+            <span className="login-env-dot" />
+            INSTANCIA PL OFFSHORE
           </div>
         </div>
 
-        {/* RIGHT */}
-        <div className="login-right">
-          <div className="login-card">
-            <div className="login-card-title">Acceso al portal</div>
-            <div className="login-card-sub">Solo personal autorizado</div>
-            {error && <div className="login-error">{error}</div>}
-            <div className="login-fg">
-              <label>Email</label>
+        <div>
+          <div className="login-eyebrow">Sistema de gestión</div>
+          <h1 className="login-h1">Operación, flota y documentación en un solo sistema.</h1>
+          <div className="login-rule" />
+          <p className="login-lead">
+            Compras, víveres, mantenimiento, certificados, costos y HSQE de la flota,
+            sobre la misma base funcional del grupo.
+          </p>
+          <div className="login-claim">We find the way, or we make one.</div>
+        </div>
+
+        <div className="login-brand-foot">
+          <div className="login-built-on">
+            <div className="login-built-on-label">Desarrollado sobre</div>
+            <img src="/integra-logo-white-noclaim.svg" alt="INTEGRA" />
+          </div>
+          <div className="login-meta">
+            <div>PL Offshore S.A.</div>
+            <div>integra.ploffshore.com</div>
+          </div>
+        </div>
+      </section>
+
+      <section className="login-form-side">
+        <div className="login-form-head">
+          <div>
+            <div className="i-label">Acceso a la instancia</div>
+            <div style={{ font: "600 15px/1.4 var(--font-sans)", color: "var(--navy-integra)", marginTop: 4 }}>
+              PL Offshore
+            </div>
+          </div>
+          <div className="login-tls">TLS 1.3 · CIFRADO</div>
+        </div>
+
+        <div className="login-form">
+          <h2 className="login-form-title">Acceso al portal</h2>
+          <p className="login-form-lead">Ingresá con tu cuenta corporativa. Solo personal autorizado.</p>
+
+          {error && (
+            <div className="alert" style={{ marginTop: 24 }} role="alert">
+              <div className="alert-label">No se pudo ingresar</div>
+              <div className="alert-text">{error}</div>
+            </div>
+          )}
+
+          <div className="login-fields">
+            <div className="field">
+              <label htmlFor="login-email">Correo corporativo</label>
               <input
-                type="email" value={email}
-                onChange={e => setEmail(e.target.value)}
-                onKeyDown={handleKey}
-                placeholder="usuario@paranalogistica.com.ar"
-                autoFocus
+                id="login-email" type="email" value={email} autoFocus
+                onChange={e => setEmail(e.target.value)} onKeyDown={handleKey}
+                placeholder="usuario@paranalogistica.com.ar" disabled={loading}
               />
             </div>
-            <div className="login-fg">
-              <label>Contraseña</label>
+            <div className="field field-pass">
+              <label htmlFor="login-pass">Contraseña</label>
               <input
-                type="password" value={pass}
-                onChange={e => setPass(e.target.value)}
-                onKeyDown={handleKey}
-                placeholder="••••••••"
+                id="login-pass" type={show ? "text" : "password"} value={pass}
+                onChange={e => setPass(e.target.value)} onKeyDown={handleKey}
+                placeholder="••••••••" disabled={loading}
               />
+              <button type="button" className="field-pass-toggle" onClick={() => setShow(!show)}>
+                {show ? "Ocultar" : "Mostrar"}
+              </button>
             </div>
-            <button className="login-btn" onClick={handleLogin} disabled={loading || !email || !pass}>
-              {loading ? "Ingresando..." : "Ingresar →"}
-            </button>
-            <div className="login-footer">PL Offshore · Acceso restringido</div>
-            <div className="login-back" onClick={() => window.location.href = ERP_HOME_URL}>
-              ← Volver a Grupo PL
+          </div>
+
+          <button
+            className="btn btn-primary"
+            style={{ marginTop: 24, height: 44, width: "100%", fontSize: 15 }}
+            onClick={handleLogin}
+            disabled={loading || !email || !pass}
+          >
+            {loading ? "Verificando credenciales…" : "Ingresar"}
+          </button>
+
+          <div className="login-form-foot">
+            <div className="login-form-foot-rule" />
+            <div className="login-form-foot-row">
+              <span>Acceso restringido · Confidencial</span>
+              <span className="powered">Powered by INTEGRA</span>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
 
-// ─── MODULO CARD ─────────────────────────────────────────────────────────────
+/* ─── CARD DE MÓDULO ────────────────────────────────────────────────────────── */
 function ModuloCard({ mod, tieneAcceso }) {
-  const isActivo   = mod.status === "activo";
-  const puedeAbrir = isActivo && mod.url && tieneAcceso;
+  const activo     = mod.status === "activo";
+  const puedeAbrir = activo && !!mod.url && tieneAcceso;
+  const estado     = !activo ? "soon" : tieneAcceso ? "open" : "blocked";
 
   const handleClick = () => { if (puedeAbrir) window.location.href = mod.url; };
 
-  let clase = `modulo-card ${mod.status}`;
-  if (isActivo && !tieneAcceso) clase = "modulo-card sin-acceso";
-
   return (
-    <div className={clase} style={{ "--card-color": mod.color }} onClick={handleClick}>
-      <div className="card-accent-bar" />
-      <div className="card-inner">
-        <div className="card-top">
-          <div className="card-icono" style={{ background: `${mod.color}18`, border: `1px solid ${mod.color}30` }}>
-            {mod.icono}
-          </div>
-          <div className="card-badges">
-            {isActivo && !tieneAcceso
-              ? <span className="badge-sin">Sin acceso</span>
-              : isActivo
-                ? <span className="badge-activo">● Activo</span>
-                : <span className="badge-prox">Próximamente</span>
-            }
-          </div>
+    <div
+      className={`mod-card ${puedeAbrir ? "is-open" : estado === "blocked" ? "is-blocked" : "is-soon"}`}
+      onClick={handleClick}
+      role={puedeAbrir ? "link" : undefined}
+      tabIndex={puedeAbrir ? 0 : undefined}
+      onKeyDown={e => { if (puedeAbrir && (e.key === "Enter" || e.key === " ")) handleClick(); }}
+    >
+      <div className="mod-card-bar" />
+
+      <div className="mod-card-body">
+        <div className="mod-card-top">
+          <span className="mod-code">{mod.codigo}</span>
+          {estado === "blocked" && <span className="badge badge-error">Sin acceso</span>}
+          {estado === "open"    && <span className="badge badge-ok"><span className="badge-dot" />Activo</span>}
+          {estado === "soon"    && <span className="badge badge-draft">Próximamente</span>}
         </div>
-        <div className="card-body">
-          <div className="card-nombre">{mod.nombre}</div>
-          <div className="card-desc">{mod.descripcion}</div>
-          <div className="card-tags">
-            {mod.tags.map(t => <span key={t} className="card-tag">{t}</span>)}
-          </div>
+
+        <div className="mod-nombre">{mod.nombre}</div>
+        <div className="mod-desc">{mod.descripcion}</div>
+
+        <div className="mod-tags">
+          {mod.tags.map(t => <span key={t} className="mod-tag">{t}</span>)}
         </div>
       </div>
-      <div className="card-footer">
-        {isActivo && !tieneAcceso
-          ? <span className="card-link-disabled">Acceso no autorizado</span>
+
+      <div className="mod-card-foot">
+        {estado === "blocked"
+          ? <span className="mod-link-off">Acceso no autorizado</span>
           : puedeAbrir
-            ? <span className="card-link" style={{ color: mod.color }}>Abrir módulo →</span>
-            : <span className="card-link-disabled">En desarrollo</span>
+            ? <span className="mod-link">Abrir módulo</span>
+            : <span className="mod-link-off">En desarrollo</span>
         }
       </div>
     </div>
   );
 }
 
-// ─── APP ──────────────────────────────────────────────────────────────────────
+/* ─── APP ───────────────────────────────────────────────────────────────────── */
 export default function App() {
-  const [session, setSession]                       = useState(null);
-  const [modulosPermitidos, setModulosPermitidos]   = useState(null);
-  const [loading, setLoading]                       = useState(true);
+  const [session, setSession]                     = useState(null);
+  const [modulosPermitidos, setModulosPermitidos] = useState(null);
+  const [loading, setLoading]                     = useState(true);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -533,77 +253,69 @@ export default function App() {
     }
   };
 
-  const handleLogout = async () => { await supabase.auth.signOut(); };
-
-  const tieneAcceso = (moduloId) => {
-    if (!modulosPermitidos) return true;
-    return modulosPermitidos.includes(moduloId);
-  };
+  const handleLogout  = async () => { await supabase.auth.signOut(); };
+  const tieneAcceso   = (id) => !modulosPermitidos || modulosPermitidos.includes(id);
 
   const activos  = MODULOS.filter(m => m.status === "activo");
   const proximos = MODULOS.filter(m => m.status === "proximamente");
+  const abiertos = activos.filter(m => tieneAcceso(m.id));
 
-  if (loading) {
-    return (
-      <div className="loading">
-        <style>{CSS}</style>
-        <div className="loading-text">Cargando...</div>
+  if (loading) return (
+    <div className="loading-page">
+      <div className="loading-inner">
+        <img src="/ploffshore-blanco.png" alt="PL Offshore" />
+        <div className="loading-text">Cargando</div>
       </div>
-    );
-  }
+    </div>
+  );
 
-  if (!session) {
-    return (
-      <>
-        <style>{CSS}</style>
-        <LoginPage />
-      </>
-    );
-  }
+  if (!session) return <LoginPage />;
 
   return (
     <>
-      <style>{CSS}</style>
-
-      <header className="header">
-        <div className="header-brand">
-          <img src="/integralogo.png" alt="INTEGRA" className="header-integra-img" />
-        </div>
-        <div className="header-right">
-          <span className="header-email">{session.user.email}</span>
-          <button className="back-btn" onClick={() => window.location.href = ERP_HOME_URL}>
-            ← Grupo PL
-          </button>
-          <button className="logout-btn" onClick={handleLogout}>Cerrar sesión</button>
+      <header className="topbar">
+        <img src="/ploffshore-blanco.png" alt="PL Offshore" className="topbar-logo" />
+        <div className="topbar-right">
+          <span className="topbar-user">{session.user.email}</span>
+          <span className="topbar-sep" />
+          <button className="btn btn-on-navy" onClick={handleLogout}>Cerrar sesión</button>
         </div>
       </header>
 
-      <div className="hero">
-        <div className="hero-content">
-          <div className="hero-logo-wrap">
-            <img src="/integralogo.png" alt="INTEGRA" className="hero-logo-img" />
+      <div className="page">
+        <div className="page-head">
+          <div>
+            <div className="page-eyebrow">PL Offshore</div>
+            <h1 className="page-title">Módulos de gestión</h1>
+            <p className="page-lead">
+              Cada módulo opera sobre los mismos datos de flota, proyectos y documentación.
+              El acceso depende de los permisos de tu cuenta.
+            </p>
+            <div className="page-rule" />
           </div>
         </div>
-      </div>
 
-      <div className="content">
-        <div className="section-label">Módulos activos</div>
-        <div className="modulos-grid">
-          {activos.map(mod => (
-            <ModuloCard key={mod.id} mod={mod} tieneAcceso={tieneAcceso(mod.id)} />
+        <div className="section-label">
+          Activos
+          <span className="section-count">{abiertos.length} de {activos.length} habilitados</span>
+        </div>
+        <div className="mods-grid">
+          {activos.map(m => (
+            <ModuloCard key={m.id} mod={m} tieneAcceso={tieneAcceso(m.id)} />
           ))}
         </div>
-        <div className="section-label" style={{ marginTop: 8 }}>Próximamente</div>
-        <div className="modulos-grid">
-          {proximos.map(mod => (
-            <ModuloCard key={mod.id} mod={mod} tieneAcceso={true} />
+
+        <div className="section-label" style={{ marginTop: 32 }}>Próximamente</div>
+        <div className="mods-grid">
+          {proximos.map(m => (
+            <ModuloCard key={m.id} mod={m} tieneAcceso={true} />
           ))}
         </div>
       </div>
 
-      <footer className="portal-footer">
-        <div className="footer-left">PL Offshore · Sistema de Gestión · Confidencial</div>
-        <div className="footer-right">v2.0 — {new Date().getFullYear()}</div>
+      <footer className="site-foot">
+        <span>PL Offshore · Sistema de gestión · Confidencial</span>
+        <span className="powered">Powered by INTEGRA · {new Date().getFullYear()}</span>
       </footer>
     </>
   );
