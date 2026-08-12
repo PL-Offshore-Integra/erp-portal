@@ -156,7 +156,7 @@ function LoginPage() {
             onClick={handleLogin}
             disabled={loading || !email || !pass}
           >
-            {loading ? "Verificando credenciales…" : "Ingresar"}
+            {loading ? "Verificando credenciales…" : "Ingresar a PL Offshore"}
           </button>
 
           <div className="login-form-foot">
