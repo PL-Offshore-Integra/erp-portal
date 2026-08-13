@@ -31,7 +31,7 @@ const MODULOS = [
     estado:"activo", url:"https://integra.costtracker.ploffshore.com" },
   { id:"hsqe", codigo:"HSQE", nombre:"HSQE",
     descripcion:"Certificaciones, inspecciones, incidentes y no conformidades.",
-    estado:"activo", url:"integra.hsqe.ploffshore.com" },
+    estado:"activo", url:"https://integra.hsqe.ploffshore.com" },
   { id:"pipeline", codigo:"PIPE", nombre:"Pipeline de oportunidades",
     descripcion:"Seguimiento comercial de licitaciones, propuestas y oportunidades.",
     estado:"proximo", url:null },
