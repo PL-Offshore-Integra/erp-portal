@@ -40,7 +40,7 @@ const MODULOS = [
     estado:"proximo", url:null },
   { id:"documentos", codigo:"DOC", nombre:"Control documental",
     descripcion:"Documentos técnicos, versiones, aprobaciones y vencimientos.",
-    estado:"desarrollo", url:null },
+    estado:"activo", url:"https://control-documentario-epp.vercel.app/" },
   { id:"dashboards", codigo:"DASH", nombre:"Dashboards",
     descripcion:"Panel ejecutivo con KPIs consolidados de todos los módulos.",
     estado:"proximo", url:null },
