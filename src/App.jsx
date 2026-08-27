@@ -8,6 +8,9 @@ const EMPRESA_NOMBRE = "PL Offshore";
 /* Módulos de la instancia. El código mono reemplaza al icono: es la
    convención de la marca (el brand book declara el set propio pendiente). */
 const MODULOS = [
+  { id:"finanzas", codigo:"FIN", nombre:"Finanzas",
+    descripcion:"Proyectos maestros, presupuestos y consolidado de costos por módulo.",
+    estado:"activo", url:"https://finanzas-pl-offshore.vercel.app" },
   { id:"compras", codigo:"COMP", nombre:"Compras",
     descripcion:"Requisiciones, cotizaciones, órdenes de compra y proveedores.",
     estado:"activo", url:"https://integra.compras.ploffshore.com" },
