@@ -35,7 +35,7 @@ const MODULOS = [
   { id:"hsqe", codigo:"HSQE", nombre:"HSQE",
     descripcion:"Certificaciones, inspecciones, incidentes y no conformidades.",
     estado:"activo", url:"https://integra.hsqe.ploffshore.com" },
-  { id:"pipeline", codigo:"PIPE", nombre:"Pipeline de oportunidades",
+  { id:"pipeline", codigo:"CRM", nombre:"Comercial",
     descripcion:"Seguimiento comercial de oportunidades y calendario de ferias del sector.",
     estado:"activo", url:"https://pl-offshore-comercial.vercel.app" },
   { id:"tripulaciones", codigo:"CREW", nombre:"Optimizador de tripulaciones",
