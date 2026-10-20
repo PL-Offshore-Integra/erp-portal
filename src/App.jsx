@@ -272,7 +272,7 @@ function ModuloCard({ mod, tieneAcceso, actividad }) {
 }
 
 /* ─── PORTAL ────────────────────────────────────────────────────────────────── */
-function Portal({ user, permisos, onLogout }) {
+function Portal({ user, permisos, errorPermisos, onLogout }) {
   const [perfil, setPerfil]     = useState(null);
   const [notifs, setNotifs]     = useState([]);
   const [recientes, setRecientes] = useState([]);
@@ -322,7 +322,7 @@ function Portal({ user, permisos, onLogout }) {
     return () => { vivo = false; };
   }, [user.id]);
 
-  const tieneAcceso = (id) => !permisos || permisos.includes(id);
+  const tieneAcceso = (id) => permisos.includes(id);
   const nombre      = perfil?.nombre || user.email;
   const primerNombre = (perfil?.nombre || "").split(" ")[0];
 
@@ -409,6 +409,12 @@ function Portal({ user, permisos, onLogout }) {
                 {habilitados.map(m => (
                   <ModuloCard key={m.id} mod={m} tieneAcceso={true} actividad={actividad[m.id]} />
                 ))}
+              </div>
+            ) : errorPermisos ? (
+              <div className="aside-empty" role="alert">
+                No pudimos verificar tus permisos, así que por seguridad no se habilitó
+                ningún módulo. Recargá la página; si sigue igual, escribinos a{" "}
+                <a href="mailto:soporte@paranalogistica.com.ar">soporte@paranalogistica.com.ar</a>.
               </div>
             ) : (
               <div className="aside-empty">Tu cuenta todavía no tiene módulos habilitados en esta instancia.</div>
@@ -513,7 +519,9 @@ function Portal({ user, permisos, onLogout }) {
 /* ─── APP ───────────────────────────────────────────────────────────────────── */
 export default function App() {
   const [session, setSession] = useState(null);
-  const [permisos, setPermisos] = useState(null);
+  /* Lista vacia, no null: sin permisos cargados no se habilita nada. */
+  const [permisos, setPermisos] = useState([]);
+  const [errorPermisos, setErrorPermisos] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -526,20 +534,28 @@ export default function App() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       if (session) loadPermisos(session.user.id);
-      else { setPermisos(null); setLoading(false); }
+      else { setPermisos([]); setErrorPermisos(false); setLoading(false); }
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
+  /* Ante la duda, sin acceso. Si la consulta falla, si el usuario no tiene fila
+     o si la lista viene vacia, el resultado es el mismo: ningun modulo
+     habilitado. Antes los tres casos devolvian null, y null abria todo. */
   const loadPermisos = async (userId) => {
     try {
       const { data, error } = await supabase
         .from("user_roles").select("modulos").eq("user_id", userId).maybeSingle();
-      if (error) console.error("Error cargando permisos:", error.message);
-      setPermisos(data?.modulos?.length > 0 ? data.modulos : null);
-    } catch {
-      setPermisos(null);
+      if (error) throw error;
+      setPermisos(Array.isArray(data?.modulos) ? data.modulos : []);
+      setErrorPermisos(false);
+    } catch (e) {
+      /* Un fallo de red no puede traducirse en acceso: se deniega y se avisa,
+         en vez de dejar al usuario frente a un portal vacio sin explicacion. */
+      console.error("Error cargando permisos:", e?.message ?? e);
+      setPermisos([]);
+      setErrorPermisos(true);
     } finally {
       setLoading(false);
     }
@@ -557,6 +573,6 @@ export default function App() {
   );
 
   return session
-    ? <Portal user={session.user} permisos={permisos} onLogout={handleLogout} />
+    ? <Portal user={session.user} permisos={permisos} errorPermisos={errorPermisos} onLogout={handleLogout} />
     : <LoginPage />;
 }
